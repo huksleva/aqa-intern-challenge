@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Вопрос по запуску
+    url: https://github.com/huksleva/aqa-intern-challenge/discussions
+    about: Обсудить окружение, запуск и подходы к тестированию
+  - name: Сообщить об уязвимости приватно
+    url: https://github.com/huksleva/aqa-intern-challenge/security/advisories/new
+    about: Проблемы безопасности репозитория не публикуются в открытых Issues
