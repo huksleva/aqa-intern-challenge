@@ -1,0 +1,22 @@
+name: aqa-intern-challenge
+
+services:
+  tests:
+    build: .
+    image: aqa-intern-challenge:local
+    init: true
+    ipc: host
+    volumes:
+      - ./playwright-report:/app/playwright-report
+      - ./test-results:/app/test-results
+
+  report:
+    build: .
+    image: aqa-intern-challenge:local
+    profiles: [report]
+    init: true
+    command: ["npm", "run", "test:report", "--", "--host", "0.0.0.0", "--port", "9323"]
+    ports:
+      - "127.0.0.1:9323:9323"
+    volumes:
+      - ./playwright-report:/app/playwright-report:ro

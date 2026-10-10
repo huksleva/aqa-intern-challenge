@@ -6,7 +6,7 @@ export default defineConfig({
   // Один повтор для нестабильной загрузки публичного сайта и CDN.
   retries: 1,
   expect: { timeout: 10_000 },
-  reporter: [['list'], ['html', { open: 'never' }]],
+  reporter: [['list'], ['html', { open: process.env.CI ? 'never' : 'always' }]],
   use: {
     baseURL: 'https://uchi.ru',
     actionTimeout: 30_000,

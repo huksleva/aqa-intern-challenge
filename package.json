@@ -5,13 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
-    "test:report": "playwright show-report"
+    "test:report": "playwright show-report",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "1.64.0",
-    "@types/node": "^22.13.8"
+    "@types/node": "^22.13.8",
+    "typescript": "7.0.2"
   }
 }
