@@ -5,7 +5,7 @@
 **Автотесты виджета поддержки Учи.ру**
 
 [![Playwright](https://img.shields.io/badge/Playwright-1.64.0-2EAD33?logo=playwright&logoColor=white)](https://playwright.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![Сценарии](https://img.shields.io/badge/сценарии-3-7C3AED)](tests/widget.spec.ts)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](LICENSE)
@@ -121,10 +121,12 @@ Docker готовит одинаковое окружение для запус�
 | `npm ci` | Установка из lock-файла выполнена; аудит на момент проверки — 0 известных уязвимостей |
 | `npm run typecheck` | Строгая проверка типов прошла |
 | `npx playwright test --list` | Ровно 3 теста в одном файле |
-| `npm test -- --workers=1` | **3 из 3 прошли с первой попытки**, 1,4 минуты. При проверке автоматическое открытие отчёта отключено через `PLAYWRIGHT_HTML_OPEN=never` |
+| `npm test -- --workers=1` | **3 из 3 прошли с первой попытки**, 84,9 секунды. При проверке автоматическое открытие отчёта отключено через `PLAYWRIGHT_HTML_OPEN=never` |
 | `docker compose --profile report config --quiet` | Конфигурация тестов и сервера отчёта корректна |
+| [Обычный CI](https://github.com/huksleva/aqa-intern-challenge/actions/runs/38093312877) | Проверка типов прошла; **3 из 3 тестов прошли с первой попытки**, 24,3 секунды |
+| [Сборка и запуск в Docker](https://github.com/huksleva/aqa-intern-challenge/actions/runs/38093803726) | Образ собран, проверка типов внутри контейнера прошла; **3 из 3 тестов прошли с первой попытки**, 33,6 секунды |
 
-В локальном окружении Docker Desktop не смог запустить движок, поэтому сборка контейнера проверяется отдельным ручным запуском GitHub Actions с параметром **Run tests in Docker**. Результат каждого запуска доступен во вкладке [Actions](https://github.com/huksleva/aqa-intern-challenge/actions).
+Контейнер проверен на Linux в GitHub Actions через ручной запуск с параметром **Run tests in Docker**. В локальном окружении Windows Docker Desktop не смог запустить движок; запуск через npm работает и не требует Docker. Результат каждого запуска доступен во вкладке [Actions](https://github.com/huksleva/aqa-intern-challenge/actions).
 
 Тесты работают с реальным публичным сайтом: его доступность, загрузка CDN и изменения интерфейса влияют на результат. В предыдущем запуске запрос JavaScript виджета с CDN не завершился, кнопка открытия не появилась, а тест прошёл только после повтора. Такие результаты сохраняются в отчёте как `flaky`.
 
