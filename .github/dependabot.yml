@@ -14,7 +14,7 @@ updates:
 
   - package-ecosystem: docker
     directory: /
-    patterns: ['mcr.microsoft.com/playwright']
+    patterns: ['*']
     multi-ecosystem-group: test-environment
 
   - package-ecosystem: github-actions
