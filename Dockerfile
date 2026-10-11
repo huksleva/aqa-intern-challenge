@@ -8,6 +8,7 @@ RUN npm ci
 
 COPY playwright.config.ts tsconfig.json ./
 COPY tests/ ./tests/
+COPY scripts/ ./scripts/
 RUN npm run typecheck
 
 CMD ["npm", "test", "--", "--workers=1"]

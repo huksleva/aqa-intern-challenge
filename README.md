@@ -80,10 +80,10 @@ npm test
 git clone https://github.com/huksleva/aqa-intern-challenge.git
 cd aqa-intern-challenge
 docker compose run --build --rm tests
-docker compose up report
+docker compose up --build report
 ```
 
-Первая команда Docker собирает образ, проверяет типы и запускает три теста. Следующая поднимает сервер полученного отчёта: откройте [http://127.0.0.1:9323](http://127.0.0.1:9323) в браузере. Для остановки нажмите `Ctrl+C`.
+Первая команда Docker собирает образ, проверяет типы и запускает три теста. Следующая поднимает сервер полученного отчёта и выводит его адрес в консоль: откройте [http://127.0.0.1:9323](http://127.0.0.1:9323) в браузере. Для остановки нажмите `Ctrl+C`.
 
 Node.js, Chromium и системные зависимости находятся внутри официального образа `mcr.microsoft.com/playwright:v1.64.0-noble`; версия совпадает с `@playwright/test`. Отчёт и диагностика сохраняются на компьютере в `playwright-report/` и `test-results/`. Сервер отчёта доступен только на локальном компьютере.
 
@@ -100,7 +100,7 @@ Node.js, Chromium и системные зависимости находятс�
 | `npx playwright test --list` | Посмотреть список сценариев |
 | `npm run test:report` | Открыть HTML-отчёт последнего запуска |
 | `docker compose run --build --rm tests` | Повторно запустить тесты в Docker |
-| `docker compose up report` | Открыть сервер отчёта Docker на порту 9323 |
+| `docker compose up --build report` | Открыть сервер отчёта Docker на порту 9323 |
 | `docker compose run --rm tests npm run typecheck` | Проверить типы в собранном контейнере |
 | `docker compose down` | Удалить остановленный контейнер сервера отчёта и сеть Compose |
 
