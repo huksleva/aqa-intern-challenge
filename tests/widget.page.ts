@@ -1,4 +1,4 @@
-import { type Locator, type Page } from '@playwright/test';
+import { errors, test, type Locator, type Page } from '@playwright/test';
 
 export class WidgetPage {
   readonly openButton: Locator;
@@ -12,6 +12,27 @@ export class WidgetPage {
     this.title = this.body.getByRole('heading', { level: 5 });
     // На десктопе кнопка data-test="button_close" в заголовке скрыта.
     this.closeButton = page.locator('[class^="widgetWrapper__"] > button[class^="closeBtn__"]');
+  }
+
+  async goto() {
+    // Повторяем только загрузку страницы; проверки сценария не перезапускаются.
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      // Убираем предыдущую страницу вместе с её отложенными перенаправлениями.
+      await this.page.goto('about:blank', { waitUntil: 'commit', timeout: 5_000 });
+      const started = Date.now();
+      try {
+        await test.step(`Загрузка страницы: попытка ${attempt} из 3`, async () => {
+          // commit не ждёт сторонние скрипты. Готовность определяет кнопка виджета.
+          await this.page.goto('/signin/main', { waitUntil: 'commit', timeout: 10_000 });
+          await this.openButton.waitFor({ state: 'visible', timeout: Math.max(1, 20_000 - (Date.now() - started)) });
+        });
+        return;
+      } catch (error) {
+        const interrupted = error instanceof Error && error.message.includes('is interrupted by another navigation');
+        if ((!(error instanceof errors.TimeoutError) && !interrupted) || attempt === 3) throw error;
+        // Новая навигация отменит зависшие запросы предыдущей загрузки.
+      }
+    }
   }
 
   async openWidget() {

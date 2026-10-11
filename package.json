@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
-    "test:report": "playwright show-report",
+    "test:report": "playwright show-report --host 127.0.0.1",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [],

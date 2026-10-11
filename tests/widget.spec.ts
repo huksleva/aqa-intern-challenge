@@ -1,5 +1,16 @@
-import { test, expect } from '@playwright/test';
+import { errors, type Page, type TestInfo } from '@playwright/test';
+import { test, expect } from './fixtures';
 import { WidgetPage } from './widget.page';
+
+async function attachScreenshot(page: Page, testInfo: TestInfo, name: string) {
+  try {
+    await testInfo.attach(name, { body: await page.screenshot({ timeout: 5_000 }), contentType: 'image/png' });
+  } catch (error) {
+    if (!(error instanceof errors.TimeoutError)) throw error;
+    // Недоступный шрифт CDN может задержать снимок уже проверенного интерфейса.
+    await testInfo.attach(`${name}-unavailable`, { body: String(error), contentType: 'text/plain' });
+  }
+}
 
 test.describe('Uchi.ru widget', () => {
   let widgetPage: WidgetPage;
@@ -12,9 +23,8 @@ test.describe('Uchi.ru widget', () => {
     });
 
     widgetPage = new WidgetPage(page);
-    await test.step('Открыть страницу выбора входа', async () => {
-      // На странице выбора входа есть виджет, а на новой главной его нет.
-      await page.goto('/signin/main', { waitUntil: 'domcontentloaded' });
+    await test.step('Открыть страницу выбора входа и дождаться виджета', async () => {
+      await widgetPage.goto();
     });
   });
 
@@ -24,10 +34,7 @@ test.describe('Uchi.ru widget', () => {
       await expect(widgetPage.body).toBeVisible();
       await expect(widgetPage.title).toHaveText('База знаний Учи.ру');
       await expect(widgetPage.body.getByText('Как написать в службу поддержки?', { exact: true })).toBeVisible();
-      await testInfo.attach('widget-open', {
-        body: await page.screenshot(),
-        contentType: 'image/png',
-      });
+      await attachScreenshot(page, testInfo, 'widget-open');
     });
   });
 
@@ -45,10 +52,7 @@ test.describe('Uchi.ru widget', () => {
       await widgetPage.clickWriteToUs();
       await expect(widgetPage.title).toHaveText('Связь с поддержкой');
       await expect(widgetPage.body.locator('textarea')).toBeVisible();
-      await testInfo.attach('contact-support', {
-        body: await page.screenshot(),
-        contentType: 'image/png',
-      });
+      await attachScreenshot(page, testInfo, 'contact-support');
     });
   });
 

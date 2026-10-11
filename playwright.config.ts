@@ -3,10 +3,17 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
   timeout: 90_000,
-  // Один повтор для нестабильной загрузки публичного сайта и CDN.
-  retries: 1,
+  retries: 0,
   expect: { timeout: 10_000 },
-  reporter: [['list'], ['html', { open: process.env.CI ? 'never' : 'always' }]],
+  reporter: [
+    ['list'],
+    ['html', {
+      open: process.env.CI ? 'never' : 'always',
+      // Явный IPv4: localhost может разрешаться в недоступный на Windows ::1.
+      host: '127.0.0.1',
+      port: 9323,
+    }],
+  ],
   use: {
     baseURL: 'https://uchi.ru',
     actionTimeout: 30_000,
