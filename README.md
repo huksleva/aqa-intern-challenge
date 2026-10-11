@@ -35,9 +35,15 @@
 
 ## Быстрый старт
 
-Нужны **Node.js 22**, npm и доступ к публичному сайту `https://uchi.ru`. Версия Node.js указана в [`.nvmrc`](.nvmrc). Учётная запись Учи.ру не требуется.
+Выберите один из трёх способов. В каждом варианте один блок команд: скопируйте его целиком и вставьте в указанную консоль. Запускайте из папки, в которой ещё нет каталога `aqa-intern-challenge`: первая команда скачает проект и создаст его.
 
-```shell
+Для всех способов нужен доступ к `https://uchi.ru` и CDN виджета. Учётная запись Учи.ру не требуется.
+
+### Windows 10/11
+
+Нужны установленные **Git** и **Node.js 22** с npm. Откройте **Командную строку (cmd)** и вставьте блок:
+
+```bat
 git clone https://github.com/huksleva/aqa-intern-challenge.git
 cd aqa-intern-challenge
 npm ci
@@ -46,42 +52,54 @@ npx playwright install chromium
 npm test
 ```
 
-По умолчанию тесты выполняются в Chromium без открытия окна браузера. После локального запуска HTML-отчёт автоматически открывается в браузере, в том числе при результате `flaky`. Сервер отчёта работает до нажатия `Ctrl+C`. В CI и Docker автоматическое открытие отключено.
+После завершения тестов HTML-отчёт автоматически откроется в браузере. Сервер отчёта работает до нажатия `Ctrl+C`.
+
+### Linux и macOS
+
+Нужны установленные **Git** и **Node.js 22** с npm. Откройте **терминал (bash или zsh)** и вставьте блок:
+
+```sh
+git clone https://github.com/huksleva/aqa-intern-challenge.git
+cd aqa-intern-challenge
+npm ci
+npm run typecheck
+npx playwright install --with-deps chromium
+npm test
+```
+
+На Linux команда установки Chromium также устанавливает системные зависимости и может запросить пароль `sudo`. После завершения тестов HTML-отчёт автоматически откроется в браузере. Для остановки сервера отчёта нажмите `Ctrl+C`.
+
+### Запуск в Docker
+
+Нужны **Git** и запущенный **Docker Desktop в режиме Linux containers** либо **Docker Engine с Compose**. Блок подходит для cmd, PowerShell и терминала Linux/macOS:
+
+```shell
+git clone https://github.com/huksleva/aqa-intern-challenge.git
+cd aqa-intern-challenge
+docker compose run --build --rm tests
+docker compose up report
+```
+
+Первая команда Docker собирает образ, проверяет типы и запускает три теста. Следующая поднимает сервер полученного отчёта: откройте [http://localhost:9323](http://localhost:9323) в браузере. Для остановки нажмите `Ctrl+C`.
+
+Node.js, Chromium и системные зависимости находятся внутри официального образа `mcr.microsoft.com/playwright:v1.64.0-noble`; версия совпадает с `@playwright/test`. Отчёт и диагностика сохраняются на компьютере в `playwright-report/` и `test-results/`. Сервер отчёта доступен только на локальном компьютере.
+
+## Дополнительные команды
+
+Выполняйте команды из папки проекта. По умолчанию тесты работают в Chromium без открытия окна браузера. При запуске через npm HTML-отчёт открывается автоматически, в том числе при результате `flaky`. В CI и Docker автоматическое открытие отключено. Если порт 9323 занят сервером предыдущего отчёта, остановите его через `Ctrl+C` перед новым запуском.
 
 | Команда | Для чего |
 | --- | --- |
-| `npm test` | Запустить все три теста и открыть отчёт |
+| `npm test` | Повторно запустить все три теста и открыть отчёт |
 | `npm run typecheck` | Проверить типы конфигурации и тестов без запуска браузера |
 | `npm test -- --headed` | Запустить с видимым окном браузера |
 | `npm test -- --ui` | Открыть интерактивный режим Playwright |
 | `npx playwright test --list` | Посмотреть список сценариев |
 | `npm run test:report` | Открыть HTML-отчёт последнего запуска |
-
-## Запуск в Docker
-
-Нужен запущенный Docker Desktop в режиме Linux containers либо Docker Engine с Compose. Устанавливать Node.js и Chromium на компьютер для этого способа не требуется.
-
-```shell
-docker compose run --build --rm tests
-```
-
-Образ основан на официальном `mcr.microsoft.com/playwright:v1.64.0-noble`: версия совпадает с `@playwright/test`. При сборке выполняются `npm ci` и проверка типов. Тесты запускаются в один worker; отчёт и диагностика сохраняются на компьютере в `playwright-report/` и `test-results/`. `.dockerignore` ограничивает контекст сборки файлами, нужными для запуска тестов.
-
-Чтобы просмотреть полученный отчёт без локальной установки Node.js:
-
-```shell
-docker compose up report
-```
-
-Откройте [http://localhost:9323](http://localhost:9323) в браузере. Сервис отчёта запускается отдельно от тестов и доступен только на локальном компьютере. Для остановки нажмите `Ctrl+C`, затем выполните `docker compose down`. Если на порту 9323 уже работает `playwright show-report`, сначала остановите его через `Ctrl+C`.
-
-Для повторной проверки типов в собранном контейнере:
-
-```shell
-docker compose run --rm tests npm run typecheck
-```
-
-Docker готовит одинаковое окружение для запуска, но тестам по-прежнему нужен доступ к публичному сайту Учи.ру и CDN виджета.
+| `docker compose run --build --rm tests` | Повторно запустить тесты в Docker |
+| `docker compose up report` | Открыть сервер отчёта Docker на порту 9323 |
+| `docker compose run --rm tests npm run typecheck` | Проверить типы в собранном контейнере |
+| `docker compose down` | Удалить остановленный контейнер сервера отчёта и сеть Compose |
 
 ## Сценарии
 
