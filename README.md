@@ -7,7 +7,7 @@
 [![Playwright](https://img.shields.io/badge/Playwright-1.64.0-2EAD33?logo=playwright&logoColor=white)](https://playwright.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
-[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](#запуск-в-docker)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com/get-started/)
 [![Сценарии](https://img.shields.io/badge/сценарии-3-7C3AED)](tests/widget.spec.ts)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](LICENSE)
 [![Playwright tests](https://github.com/huksleva/aqa-intern-challenge/actions/workflows/playwright.yml/badge.svg?branch=master)](https://github.com/huksleva/aqa-intern-challenge/actions/workflows/playwright.yml)
