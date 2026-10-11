@@ -1,7 +1,7 @@
 ---
 name: Предложение улучшения
 about: Улучшить локаторы, диагностику, документацию или настройку запуска
-title: "[Improvement] "
+title: '[Improvement] '
 labels: enhancement
 assignees: ''
 ---

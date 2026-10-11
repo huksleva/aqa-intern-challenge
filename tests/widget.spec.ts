@@ -4,11 +4,17 @@ import { WidgetPage } from './widget.page';
 
 async function attachScreenshot(page: Page, testInfo: TestInfo, name: string) {
   try {
-    await testInfo.attach(name, { body: await page.screenshot({ timeout: 5_000 }), contentType: 'image/png' });
+    await testInfo.attach(name, {
+      body: await page.screenshot({ timeout: 5_000 }),
+      contentType: 'image/png',
+    });
   } catch (error) {
     if (!(error instanceof errors.TimeoutError)) throw error;
     // Недоступный шрифт CDN может задержать снимок уже проверенного интерфейса.
-    await testInfo.attach(`${name}-unavailable`, { body: String(error), contentType: 'text/plain' });
+    await testInfo.attach(`${name}-unavailable`, {
+      body: String(error),
+      contentType: 'text/plain',
+    });
   }
 }
 
@@ -18,7 +24,7 @@ test.describe('Uchi.ru widget', () => {
   test.beforeEach(async ({ page }) => {
     const cookieBanner = page.locator('._UCHI_COOKIE__wrap.show').filter({ visible: true });
     // Баннер может появиться после загрузки страницы и перекрыть кнопку виджета.
-    await page.addLocatorHandler(cookieBanner, async banner => {
+    await page.addLocatorHandler(cookieBanner, async (banner) => {
       await banner.getByText('принять', { exact: true }).click();
     });
 
@@ -33,7 +39,9 @@ test.describe('Uchi.ru widget', () => {
       await widgetPage.openWidget();
       await expect(widgetPage.body).toBeVisible();
       await expect(widgetPage.title).toHaveText('База знаний Учи.ру');
-      await expect(widgetPage.body.getByText('Как написать в службу поддержки?', { exact: true })).toBeVisible();
+      await expect(
+        widgetPage.body.getByText('Как написать в службу поддержки?', { exact: true }),
+      ).toBeVisible();
       await attachScreenshot(page, testInfo, 'widget-open');
     });
   });

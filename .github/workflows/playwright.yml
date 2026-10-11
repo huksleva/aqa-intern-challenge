@@ -21,9 +21,14 @@ concurrency:
 
 jobs:
   test:
-    name: Chromium · 3 scenarios
-    runs-on: ubuntu-latest
+    name: ${{ inputs.docker == true && 'Docker · Chromium' || format('Chromium · {0}', matrix.os) }}
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        # Docker запускается только на Linux; обычный CI проверяет все три ОС.
+        os: ${{ fromJSON(inputs.docker == true && '["ubuntu-latest"]' || '["ubuntu-latest", "windows-latest", "macos-latest"]') }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -39,10 +44,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check formatting
+        run: npm run format:check
+
       - name: Check TypeScript types
         run: npm run typecheck
 
       - name: Validate Docker Compose configuration
+        if: runner.os == 'Linux'
         run: docker compose --profile report config --quiet
 
       - name: Install Chromium
@@ -61,7 +70,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.os }}${{ inputs.docker == true && '-docker' || '' }}
           path: |
             playwright-report/
             test-results/

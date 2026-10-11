@@ -7,12 +7,15 @@ export default defineConfig({
   expect: { timeout: 10_000 },
   reporter: [
     ['list'],
-    ['html', {
-      open: process.env.CI ? 'never' : 'always',
-      // Явный IPv4: localhost может разрешаться в недоступный на Windows ::1.
-      host: '127.0.0.1',
-      port: 9323,
-    }],
+    [
+      'html',
+      {
+        open: process.env.CI ? 'never' : 'always',
+        // Явный IPv4: localhost может разрешаться в недоступный на Windows ::1.
+        host: '127.0.0.1',
+        port: 9323,
+      },
+    ],
   ],
   use: {
     baseURL: 'https://uchi.ru',

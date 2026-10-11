@@ -24,11 +24,15 @@ export class WidgetPage {
         await test.step(`Загрузка страницы: попытка ${attempt} из 3`, async () => {
           // commit не ждёт сторонние скрипты. Готовность определяет кнопка виджета.
           await this.page.goto('/signin/main', { waitUntil: 'commit', timeout: 10_000 });
-          await this.openButton.waitFor({ state: 'visible', timeout: Math.max(1, 20_000 - (Date.now() - started)) });
+          await this.openButton.waitFor({
+            state: 'visible',
+            timeout: Math.max(1, 20_000 - (Date.now() - started)),
+          });
         });
         return;
       } catch (error) {
-        const interrupted = error instanceof Error && error.message.includes('is interrupted by another navigation');
+        const interrupted =
+          error instanceof Error && error.message.includes('is interrupted by another navigation');
         if ((!(error instanceof errors.TimeoutError) && !interrupted) || attempt === 3) throw error;
         // Новая навигация отменит зависшие запросы предыдущей загрузки.
       }
