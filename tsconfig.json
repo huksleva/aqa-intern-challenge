@@ -6,7 +6,9 @@
     "lib": ["ES2022", "DOM"],
     "types": ["node"],
     "strict": true,
-    "noEmit": true
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "include": ["playwright.config.ts", "tests/**/*.ts"]
 }

@@ -1,15 +1,12 @@
 {
   "name": "aqa-intern-challenge",
   "version": "1.0.0",
-  "description": "Тестовое задание для AQA стажёра в компании учи",
-  "main": "index.js",
+  "description": "Автотесты виджета поддержки Учи.ру для задания AQA Intern Challenge",
   "scripts": {
     "test": "playwright test",
     "test:report": "playwright show-report --host 127.0.0.1",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit && node --check scripts/docker-report.cjs"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "1.64.0",
