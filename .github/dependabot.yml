@@ -11,6 +11,10 @@ updates:
     directory: /
     patterns: ['*']
     multi-ecosystem-group: test-environment
+    # Типы соответствуют Node.js 22 из .nvmrc.
+    ignore:
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: docker
     directory: /
