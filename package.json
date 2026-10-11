@@ -5,9 +5,10 @@
   "scripts": {
     "test": "playwright test",
     "test:report": "playwright show-report --host 127.0.0.1",
-    "typecheck": "tsc --noEmit && node --check scripts/docker-report.cjs",
+    "typecheck": "tsc --noEmit && node --check scripts/docker-report.cjs && node --check scripts/check-playwright-version.cjs",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "check": "npm run format:check && npm run typecheck && node scripts/check-playwright-version.cjs"
   },
   "license": "ISC",
   "devDependencies": {

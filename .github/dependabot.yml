@@ -1,0 +1,26 @@
+version: 2
+
+multi-ecosystem-groups:
+  test-environment:
+    schedule:
+      interval: weekly
+
+updates:
+  # npm и образ Playwright предлагаются одним PR; совместимость проверяет npm run check.
+  - package-ecosystem: npm
+    directory: /
+    patterns: ['*']
+    multi-ecosystem-group: test-environment
+
+  - package-ecosystem: docker
+    directory: /
+    patterns: ['mcr.microsoft.com/playwright']
+    multi-ecosystem-group: test-environment
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ['*']
